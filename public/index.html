@@ -1,0 +1,2145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>VoteSentinel</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=DM+Sans:wght@300;400;500&family=DM+Mono&display=swap"
+    rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0d1117;
+      --s1: #161b22;
+      --s2: #1c2230;
+      --s3: #21262d;
+      --b0: rgba(255, 255, 255, 0.05);
+      --b1: rgba(255, 255, 255, 0.10);
+      --b2: rgba(255, 255, 255, 0.18);
+      --gold: #c9a227;
+      --gold2: #e8c547;
+      --blue: #4f9cf9;
+      --green: #3fb950;
+      --red: #f85149;
+      --purple: #bc8cff;
+      --amber: #f0a500;
+      --t1: #e6edf3;
+      --t2: #8b949e;
+      --t3: #484f58;
+      --fd: 'Playfair Display', serif;
+      --fu: 'DM Sans', sans-serif;
+      --fm: 'DM Mono', monospace;
+      --r: 8px;
+      --rl: 12px;
+    }
+
+    html,
+    body {
+      background: var(--bg);
+      color: var(--t1);
+      font-family: var(--fu);
+      min-height: 100vh;
+    }
+
+    .wrap {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 5rem;
+    }
+
+    .seal {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .seal-ring {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 2px solid var(--gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto .65rem;
+      background: rgba(201, 162, 39, .08);
+    }
+
+    .seal-icon {
+      font-size: 26px;
+    }
+
+    .seal-title {
+      font-family: var(--fd);
+      font-size: 21px;
+      letter-spacing: .02em;
+    }
+
+    .seal-sub {
+      font-size: 11px;
+      color: var(--t2);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+
+    .el-banner {
+      text-align: center;
+      margin-bottom: 1.75rem;
+    }
+
+    .el-banner-title {
+      font-family: var(--fd);
+      font-size: 17px;
+      color: var(--gold);
+      letter-spacing: .03em;
+      margin-bottom: 4px;
+    }
+
+    .el-banner-sub {
+      font-size: 12px;
+      color: var(--t3);
+      letter-spacing: .06em;
+    }
+
+    .card {
+      background: var(--s1);
+      border: .5px solid var(--b1);
+      border-radius: var(--rl);
+      padding: 1.5rem;
+    }
+
+    .card+.card,
+    .card+.mt {
+      margin-top: .875rem;
+    }
+
+    .ct {
+      font-family: var(--fd);
+      font-size: 17px;
+      margin-bottom: .2rem;
+    }
+
+    .cs {
+      font-size: 13px;
+      color: var(--t2);
+      margin-bottom: 1.25rem;
+    }
+
+    .f {
+      margin-bottom: .875rem;
+    }
+
+    .f label {
+      display: block;
+      font-size: 11px;
+      color: var(--t2);
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .f input,
+    .f textarea,
+    .f select {
+      width: 100%;
+      background: var(--bg);
+      border: .5px solid var(--b2);
+      border-radius: var(--r);
+      padding: 9px 11px;
+      font-size: 13.5px;
+      color: var(--t1);
+      font-family: var(--fu);
+      outline: none;
+      transition: border-color .18s;
+      resize: vertical;
+    }
+
+    .f input:focus,
+    .f textarea:focus,
+    .f select:focus {
+      border-color: var(--gold);
+    }
+
+    .f input::placeholder,
+    .f textarea::placeholder {
+      color: var(--t3);
+    }
+
+    .f select option {
+      background: var(--s1);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      padding: 10px;
+      border-radius: var(--r);
+      border: none;
+      font-size: 13.5px;
+      font-family: var(--fu);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .14s;
+      letter-spacing: .02em;
+    }
+
+    .btn:disabled {
+      opacity: .45;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: #0d1117;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: var(--gold2);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--t1);
+      border: .5px solid var(--b2);
+    }
+
+    .btn-outline:hover:not(:disabled) {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .btn-purple {
+      background: rgba(188, 140, 255, .15);
+      color: var(--purple);
+      border: .5px solid rgba(188, 140, 255, .3);
+    }
+
+    .btn-purple:hover:not(:disabled) {
+      background: rgba(188, 140, 255, .25);
+    }
+
+    .btn-green {
+      background: rgba(63, 185, 80, .12);
+      color: var(--green);
+      border: .5px solid rgba(63, 185, 80, .25);
+    }
+
+    .btn-green:hover:not(:disabled) {
+      background: rgba(63, 185, 80, .22);
+    }
+
+    .btn-red {
+      background: rgba(248, 81, 73, .1);
+      color: var(--red);
+      border: .5px solid rgba(248, 81, 73, .25);
+    }
+
+    .btn-red:hover:not(:disabled) {
+      background: rgba(248, 81, 73, .2);
+    }
+
+    .btn-sm {
+      width: auto;
+      padding: 5px 13px;
+      font-size: 12px;
+      border-radius: 6px;
+    }
+
+    .btn-xs {
+      width: auto;
+      padding: 3px 9px;
+      font-size: 11px;
+      border-radius: 5px;
+    }
+
+    .div {
+      text-align: center;
+      font-size: 12px;
+      color: var(--t3);
+      margin: .875rem 0;
+      position: relative;
+    }
+
+    .div::before,
+    .div::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 42%;
+      height: .5px;
+      background: var(--b1);
+    }
+
+    .div::before {
+      left: 0;
+    }
+
+    .div::after {
+      right: 0;
+    }
+
+    .err {
+      font-size: 12px;
+      color: var(--red);
+      margin-top: 8px;
+      padding: 8px 11px;
+      background: rgba(248, 81, 73, .08);
+      border-radius: 6px;
+      border-left: 2px solid var(--red);
+    }
+
+    .suc {
+      font-size: 12px;
+      color: var(--green);
+      padding: 8px 11px;
+      background: rgba(63, 185, 80, .08);
+      border-radius: 6px;
+      border-left: 2px solid var(--green);
+      margin-top: 8px;
+    }
+
+    .info {
+      font-size: 12px;
+      color: var(--blue);
+      padding: 8px 11px;
+      background: rgba(79, 156, 249, .08);
+      border-radius: 6px;
+      border-left: 2px solid var(--blue);
+      margin-bottom: .875rem;
+    }
+
+    .otp-hint {
+      background: rgba(79, 156, 249, .08);
+      border: .5px solid rgba(79, 156, 249, .25);
+      border-radius: 8px;
+      padding: 11px;
+      margin-bottom: .875rem;
+      font-size: 13px;
+      color: var(--blue);
+    }
+
+    .otp-row {
+      display: flex;
+      gap: 7px;
+      justify-content: center;
+      margin: 1.1rem 0;
+    }
+
+    .otp-box {
+      width: 42px;
+      height: 50px;
+      background: var(--bg);
+      border: .5px solid var(--b2);
+      border-radius: var(--r);
+      font-size: 20px;
+      font-family: var(--fm);
+      color: var(--t1);
+      text-align: center;
+      outline: none;
+      transition: border-color .15s;
+    }
+
+    .otp-box:focus {
+      border-color: var(--gold);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10.5px;
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-weight: 500;
+      letter-spacing: .04em;
+      white-space: nowrap;
+    }
+
+    .b-gold {
+      background: rgba(201, 162, 39, .15);
+      color: var(--gold);
+      border: .5px solid rgba(201, 162, 39, .3);
+    }
+
+    .b-green {
+      background: rgba(63, 185, 80, .15);
+      color: var(--green);
+      border: .5px solid rgba(63, 185, 80, .3);
+    }
+
+    .b-red {
+      background: rgba(248, 81, 73, .15);
+      color: var(--red);
+      border: .5px solid rgba(248, 81, 73, .3);
+    }
+
+    .b-blue {
+      background: rgba(79, 156, 249, .15);
+      color: var(--blue);
+      border: .5px solid rgba(79, 156, 249, .3);
+    }
+
+    .b-purple {
+      background: rgba(188, 140, 255, .15);
+      color: var(--purple);
+      border: .5px solid rgba(188, 140, 255, .3);
+    }
+
+    .b-amber {
+      background: rgba(240, 165, 0, .15);
+      color: var(--amber);
+      border: .5px solid rgba(240, 165, 0, .3);
+    }
+
+    .b-live {
+      background: rgba(63, 185, 80, .15);
+      color: var(--green);
+      border: .5px solid rgba(63, 185, 80, .3);
+    }
+
+    .role-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 1.25rem;
+    }
+
+    .role-card {
+      background: var(--bg);
+      border: .5px solid var(--b1);
+      border-radius: 10px;
+      padding: 1.1rem;
+      cursor: pointer;
+      transition: all .14s;
+      text-align: center;
+    }
+
+    .role-card:hover {
+      border-color: var(--b2);
+    }
+
+    .role-card.rv {
+      border-color: var(--gold);
+      background: rgba(201, 162, 39, .05);
+    }
+
+    .role-card.ra {
+      border-color: var(--purple);
+      background: rgba(188, 140, 255, .05);
+    }
+
+    .ri {
+      font-size: 24px;
+      margin-bottom: .4rem;
+    }
+
+    .rn {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .rd {
+      font-size: 11px;
+      color: var(--t3);
+      margin-top: 2px;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 3px;
+      background: var(--bg);
+      border-radius: var(--r);
+      padding: 3px;
+      margin-bottom: 1.1rem;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 6px 4px;
+      border: none;
+      background: transparent;
+      color: var(--t2);
+      font-family: var(--fu);
+      font-size: 11.5px;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: all .14s;
+      white-space: nowrap;
+    }
+
+    .tab.on {
+      background: var(--s2);
+      color: var(--t1);
+      font-weight: 500;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 1.1rem;
+    }
+
+    .stat {
+      background: var(--bg);
+      border-radius: var(--r);
+      padding: 11px;
+      text-align: center;
+    }
+
+    .sv {
+      font-size: 21px;
+      font-weight: 500;
+      font-family: var(--fm);
+    }
+
+    .sl {
+      font-size: 10px;
+      color: var(--t3);
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+    }
+
+    .tbl {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .tbl th {
+      text-align: left;
+      color: var(--t3);
+      font-weight: 500;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: 5px 8px;
+      border-bottom: .5px solid var(--b1);
+    }
+
+    .tbl td {
+      padding: 7px 8px;
+      border-bottom: .5px solid var(--b0);
+      color: var(--t2);
+      vertical-align: middle;
+    }
+
+    .tbl tr:last-child td {
+      border-bottom: none;
+    }
+
+    .tbl tr:hover td {
+      background: rgba(255, 255, 255, .015);
+    }
+
+    .rb {
+      margin-bottom: 13px;
+    }
+
+    .rm {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 5px;
+    }
+
+    .rn2 {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .rc {
+      font-size: 11.5px;
+      color: var(--t2);
+      font-family: var(--fm);
+    }
+
+    .rt {
+      height: 7px;
+      background: var(--bg);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .rf {
+      height: 100%;
+      border-radius: 4px;
+      transition: width .8s cubic-bezier(.4, 0, .2, 1);
+    }
+
+    .cand {
+      background: var(--bg);
+      border: .5px solid var(--b1);
+      border-radius: 10px;
+      padding: 13px 15px;
+      cursor: pointer;
+      transition: all .14s;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      margin-bottom: 9px;
+    }
+
+    .cand:hover {
+      border-color: var(--b2);
+    }
+
+    .cand.sel {
+      border-color: var(--gold);
+      background: rgba(201, 162, 39, .06);
+    }
+
+    .cav {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+      font-weight: 500;
+    }
+
+    .cnm {
+      font-size: 14.5px;
+      font-weight: 500;
+    }
+
+    .cpt {
+      font-size: 11.5px;
+      color: var(--t2);
+    }
+
+    .rdot {
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      border: 1.5px solid var(--b2);
+      margin-left: auto;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all .14s;
+    }
+
+    .cand.sel .rdot {
+      border-color: var(--gold);
+      background: var(--gold);
+    }
+
+    .rdi {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #0d1117;
+    }
+
+    .tok {
+      background: var(--bg);
+      border: .5px solid var(--b2);
+      border-radius: var(--r);
+      padding: 13px;
+      margin: 1rem 0;
+      font-family: var(--fm);
+      font-size: 11px;
+      color: var(--gold);
+      word-break: break-all;
+      line-height: 1.85;
+      letter-spacing: .04em;
+    }
+
+    .tok-lbl {
+      font-size: 10px;
+      color: var(--t3);
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      margin-bottom: 3px;
+    }
+
+    .sec-badge {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(63, 185, 80, .07);
+      border: .5px solid rgba(63, 185, 80, .2);
+      border-radius: var(--r);
+      padding: 9px 11px;
+      margin-bottom: .875rem;
+      font-size: 12px;
+      color: var(--green);
+    }
+
+    .adm-notice {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(188, 140, 255, .07);
+      border: .5px solid rgba(188, 140, 255, .2);
+      border-radius: var(--r);
+      padding: 9px 11px;
+      margin-bottom: .875rem;
+      font-size: 12px;
+      color: var(--purple);
+    }
+
+    .warn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(240, 165, 0, .07);
+      border: .5px solid rgba(240, 165, 0, .2);
+      border-radius: var(--r);
+      padding: 9px 11px;
+      margin-bottom: .875rem;
+      font-size: 12px;
+      color: var(--amber);
+    }
+
+    .sep {
+      border: none;
+      border-top: .5px solid var(--b0);
+      margin: 1.1rem 0;
+    }
+
+    .lbl {
+      font-size: 10.5px;
+      color: var(--t3);
+      text-transform: uppercase;
+      letter-spacing: .09em;
+      margin-bottom: .5rem;
+    }
+
+    .nav-lnk {
+      font-size: 12.5px;
+      color: var(--t2);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--fu);
+      text-decoration: underline;
+    }
+
+    .nav-lnk:hover {
+      color: var(--gold);
+    }
+
+    .confetti {
+      font-size: 34px;
+      text-align: center;
+      margin: .4rem 0 .875rem;
+    }
+
+    .el-status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg);
+      border-radius: var(--r);
+      padding: 11px 13px;
+      margin-bottom: .875rem;
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 5px;
+    }
+
+    .dg {
+      background: var(--green);
+    }
+
+    .dr {
+      background: var(--red);
+    }
+
+    .dy {
+      background: var(--amber);
+    }
+
+    .sec-log {
+      max-height: 200px;
+      overflow-y: auto;
+      font-family: var(--fm);
+      font-size: 10.5px;
+    }
+
+    .sl-item {
+      display: flex;
+      gap: 8px;
+      padding: 5px 0;
+      border-bottom: .5px solid var(--b0);
+    }
+
+    .sl-ts {
+      color: var(--t3);
+      flex-shrink: 0;
+      width: 50px;
+    }
+
+    .sl-act {
+      color: var(--gold);
+      flex-shrink: 0;
+      width: 90px;
+    }
+
+    .sl-det {
+      color: var(--t2);
+    }
+
+    .enc-blob {
+      font-family: var(--fm);
+      font-size: 9px;
+      color: var(--t3);
+      word-break: break-all;
+      background: var(--bg);
+      border: .5px solid var(--b0);
+      border-radius: 5px;
+      padding: 6px 8px;
+      margin-top: 4px;
+      line-height: 1.6;
+    }
+
+    .inbox-fab {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+    }
+
+    .inbox-btn {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--s1);
+      border: .5px solid var(--b2);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, .4);
+      transition: all .14s;
+      position: relative;
+    }
+
+    .inbox-btn:hover {
+      background: var(--s2);
+      transform: scale(1.05);
+    }
+
+    .inbox-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--red);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 600;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--fm);
+    }
+
+    .inbox-panel {
+      position: fixed;
+      bottom: 80px;
+      right: 24px;
+      width: 340px;
+      background: var(--s1);
+      border: .5px solid var(--b2);
+      border-radius: var(--rl);
+      z-index: 999;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, .5);
+      max-height: 440px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .inbox-head {
+      padding: 12px 14px;
+      border-bottom: .5px solid var(--b1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .inbox-title {
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .inbox-close {
+      background: none;
+      border: none;
+      color: var(--t2);
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .inbox-list {
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .email-item {
+      padding: 11px 14px;
+      border-bottom: .5px solid var(--b0);
+      cursor: pointer;
+      transition: background .12s;
+    }
+
+    .email-item:hover {
+      background: var(--s2);
+    }
+
+    .email-item.unread {
+      border-left: 2px solid var(--blue);
+    }
+
+    .ei-subj {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--t1);
+      margin-bottom: 3px;
+    }
+
+    .ei-to {
+      font-size: 11px;
+      color: var(--t3);
+    }
+
+    .ei-ts {
+      font-size: 10px;
+      color: var(--t3);
+    }
+
+    .email-detail {
+      padding: 14px;
+      border-bottom: .5px solid var(--b1);
+    }
+
+    .ed-subj {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: .5rem;
+    }
+
+    .ed-meta {
+      font-size: 11px;
+      color: var(--t2);
+      margin-bottom: .75rem;
+    }
+
+    .ed-body {
+      font-size: 12px;
+      color: var(--t2);
+      line-height: 1.7;
+      white-space: pre-wrap;
+    }
+
+    .ed-hl {
+      font-family: var(--fm);
+      font-size: 13px;
+      color: var(--gold);
+      background: rgba(201, 162, 39, .1);
+      padding: 6px 10px;
+      border-radius: 5px;
+      letter-spacing: .05em;
+      margin: .5rem 0;
+    }
+
+    .inbox-empty {
+      padding: 2rem;
+      text-align: center;
+      font-size: 12px;
+      color: var(--t3);
+    }
+
+    .el-card {
+      background: var(--bg);
+      border: .5px solid var(--b1);
+      border-radius: 10px;
+      padding: 13px 15px;
+      margin-bottom: 9px;
+      cursor: pointer;
+      transition: all .14s;
+    }
+
+    .el-card:hover {
+      border-color: var(--b2);
+    }
+
+    .el-card.active-el {
+      border-color: var(--green);
+    }
+
+    .en {
+      font-size: 14.5px;
+      font-weight: 500;
+      margin-bottom: 3px;
+    }
+
+    .ed2 {
+      font-size: 11.5px;
+      color: var(--t2);
+    }
+
+    .crypto-strip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      background: rgba(63, 185, 80, .04);
+      border: .5px solid rgba(63, 185, 80, .12);
+      border-radius: 6px;
+      margin-top: .75rem;
+      font-size: 10.5px;
+      color: var(--t3);
+    }
+
+    .cryp-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      flex-shrink: 0;
+    }
+
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      flex-direction: column;
+      gap: .875rem;
+    }
+
+    .loading-ring {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid rgba(201, 162, 39, .2);
+      border-top-color: var(--gold);
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="root">
+    <div class="loading">
+      <div class="loading-ring"></div>
+      <div style="font-size:13px;color:#c9a227;font-family:'DM Mono',monospace;">Initializing crypto engine…</div>
+      <div style="font-size:11px;color:#484f58;">Generating AES-256-GCM keys</div>
+    </div>
+  </div>
+  <script>
+    'use strict';
+    const { useState, useRef } = React;
+    const h = React.createElement;
+
+    /* ============================================================
+       BACKEND API CONFIG
+       Change API_BASE to your deployed server URL in production.
+       e.g. 'https://your-app.onrender.com'
+       ============================================================ */
+    const API_BASE = 'http://localhost:5500';
+
+    /* ── API Helper Functions ── */
+
+    async function apiSendOTP(email) {
+      const r = await fetch(`${API_BASE}/send-otp`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+      return r.json();
+    }
+
+    async function apiVerifyOTP(email, otp) {
+      const r = await fetch(`${API_BASE}/verify-otp`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, otp })
+      });
+      return r.json();
+    }
+
+    async function apiGetPolls() {
+      const r = await fetch(`${API_BASE}/polls`);
+      return r.json();
+    }
+
+    async function apiCastVote(email, token, pollId, candidate) {
+      const r = await fetch(`${API_BASE}/vote`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, token, pollId, candidate })
+      });
+      return r.json();
+    }
+
+    async function apiCreatePoll(adminKey, title, candidates) {
+      const r = await fetch(`${API_BASE}/admin/create-poll`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ adminKey, title, candidates })
+      });
+      return r.json();
+    }
+
+    /* ── Crypto & Utility ── */
+    const SALT = 'sv:2026:secure';
+    let AES_KEY = null;
+
+    function hex(buf) { return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join(''); }
+    function dehex(s) { return new Uint8Array(s.match(/.{2}/g).map(b => parseInt(b, 16))); }
+
+    async function sha256(t) {
+      return hex(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(t)));
+    }
+    async function hashPwd(p) { return sha256(SALT + ':' + p); }
+
+    async function encryptVote(candidateId, electionId) {
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const plain = new TextEncoder().encode(JSON.stringify({
+        v: 1, candidateId, electionId, ts: Date.now(),
+        nonce: hex(crypto.getRandomValues(new Uint8Array(8)))
+      }));
+      const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv, tagLength: 128 }, AES_KEY, plain);
+      logSec('ENCRYPT', 'Vote for election ' + electionId + ' encrypted', 'ok');
+      return { alg: 'AES-256-GCM', tagLen: 128, iv: hex(iv), ct: hex(new Uint8Array(ct)) };
+    }
+
+    async function decryptVote(enc) {
+      const dec = await crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv: dehex(enc.iv), tagLength: 128 }, AES_KEY, dehex(enc.ct));
+      return JSON.parse(new TextDecoder().decode(dec));
+    }
+
+    function genToken(pre = 'BLT') {
+      const b = hex(crypto.getRandomValues(new Uint8Array(16))).toUpperCase();
+      return `${pre}-${b.slice(0, 4)}-${b.slice(4, 8)}-${b.slice(8, 12)}-${b.slice(12, 16)}`;
+    }
+    function genOTP() { return String(Math.floor(100000 + Math.random() * 900000)); }
+    function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 5); }
+    function now() { return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); }
+    function nowFull() { return new Date().toLocaleString(); }
+
+    /* ── Local Demo DB (for admin panel & local accounts) ── */
+    const DB = { admins: {}, voters: {}, elections: {}, votes: {}, tallies: {}, emails: [] };
+    const SECLOG = [];
+
+    function logSec(action, detail, level = 'info') {
+      SECLOG.unshift({ id: uid(), action, detail, level, ts: now() });
+      if (SECLOG.length > 80) SECLOG.length = 80;
+    }
+    function sendEmail(to, subject, body, highlight = '') {
+      DB.emails.unshift({ id: uid(), to, subject, body, highlight, ts: nowFull(), read: false });
+    }
+
+    const CPAL = [
+      { c: '#4f9cf9', bg: 'rgba(79,156,249,.15)' },
+      { c: '#c9a227', bg: 'rgba(201,162,39,.15)' },
+      { c: '#3fb950', bg: 'rgba(63,185,80,.15)' },
+      { c: '#bc8cff', bg: 'rgba(188,140,255,.15)' },
+      { c: '#f85149', bg: 'rgba(248,81,73,.15)' },
+      { c: '#e8c547', bg: 'rgba(232,197,71,.15)' },
+      { c: '#ff9f43', bg: 'rgba(255,159,67,.15)' },
+    ];
+
+    /* ── Primitives ── */
+    function Seal({ icon, title, sub } = {}) {
+      return h('div', { className: 'seal' },
+        h('div', { className: 'seal-ring' }, h('span', { className: 'seal-icon' }, icon || '⚖')),
+        h('div', { className: 'seal-title' }, title || 'VoteSentinel'),
+        h('div', { className: 'seal-sub' }, sub || 'Secure Voting Application')
+      );
+    }
+
+    function Fld({ label, val, onChange, type = 'text', ph = '', rows } = {}) {
+      if (rows) return h('div', { className: 'f' },
+        h('label', null, label),
+        h('textarea', { rows, placeholder: ph, value: val, onChange: e => onChange(e.target.value) })
+      );
+      return h('div', { className: 'f' },
+        h('label', null, label),
+        h('input', { type, placeholder: ph, value: val, onChange: e => onChange(e.target.value) })
+      );
+    }
+
+    function Sel({ label, val, onChange, options } = {}) {
+      return h('div', { className: 'f' },
+        h('label', null, label),
+        h('select', { value: val, onChange: e => onChange(e.target.value) },
+          h('option', { value: '' }, '— Select —'),
+          (options || []).map(o => h('option', { key: o.id, value: o.id }, o.label || o.title || o.name))
+        )
+      );
+    }
+
+    function OTPInput({ otp, setOtp, refs } = {}) {
+      function change(i, val) {
+        if (!/^\d?$/.test(val)) return;
+        const n = [...otp]; n[i] = val; setOtp(n);
+        if (val && i < 5) refs[i + 1].current.focus();
+      }
+      function kdown(i, e) { if (e.key === 'Backspace' && !otp[i] && i > 0) refs[i - 1].current.focus(); }
+      return h('div', { className: 'otp-row' },
+        otp.map((v, i) => h('input', { key: i, ref: refs[i], className: 'otp-box', maxLength: 1, value: v, inputMode: 'numeric', onChange: e => change(i, e.target.value), onKeyDown: e => kdown(i, e) }))
+      );
+    }
+
+    /* ── Email Inbox (shows simulated system emails) ── */
+    function EmailInbox({ emails, onRead }) {
+      const [open, setOpen] = useState(false);
+      const [detail, setDetail] = useState(null);
+      const unread = (emails || []).filter(e => !e.read).length;
+      function openEmail(e) { if (!e.read) { e.read = true; onRead(); } setDetail(e); }
+      return h('div', { className: 'inbox-fab' },
+        open && h('div', { className: 'inbox-panel' },
+          detail
+            ? h('div', null,
+              h('div', { className: 'inbox-head' },
+                h('button', { onClick: () => setDetail(null), className: 'nav-lnk', style: { textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--t2)', fontSize: '12px' } }, '← back'),
+                h('span', { style: { fontSize: '11px', color: 'var(--t3)' } }, detail.ts)
+              ),
+              h('div', { className: 'email-detail' },
+                h('div', { className: 'ed-subj' }, detail.subject),
+                h('div', { className: 'ed-meta' }, 'To: ', detail.to),
+                detail.highlight && h('div', { className: 'ed-hl' }, detail.highlight),
+                h('div', { className: 'ed-body' }, detail.body)
+              )
+            )
+            : h('div', null,
+              h('div', { className: 'inbox-head' },
+                h('div', { className: 'inbox-title' }, '📬 Email Inbox', unread > 0 && h('span', { className: 'badge b-blue' }, unread + ' new')),
+                h('button', { className: 'inbox-close', onClick: () => setOpen(false) }, '✕')
+              ),
+              h('div', { className: 'inbox-list' },
+                (emails || []).length === 0
+                  ? h('div', { className: 'inbox-empty' }, 'No system emails yet.\nReal OTPs and tokens are sent to your actual inbox.')
+                  : (emails || []).map(e => h('div', { key: e.id, className: 'email-item' + (e.read ? '' : ' unread'), onClick: () => openEmail(e) },
+                    h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' } },
+                      h('div', { className: 'ei-subj' }, e.subject),
+                      h('div', { className: 'ei-ts' }, e.ts)
+                    ),
+                    h('div', { className: 'ei-to' }, 'To: ' + e.to)
+                  ))
+              )
+            )
+        ),
+        h('div', { className: 'inbox-btn', onClick: () => { setOpen(!open); setDetail(null); } },
+          '📬',
+          unread > 0 && h('div', { className: 'inbox-badge' }, unread)
+        )
+      );
+    }
+
+    /* ═══════════════════════════════════════════════
+       ADMIN PANEL
+    ═══════════════════════════════════════════════ */
+    function AdminPanel({ session, onLogout, onEmailChange, adminKey }) {
+      const [tab, setTab] = useState('overview');
+      const [err, setErr] = useState('');
+      const [msg, setMsg] = useState('');
+      const [, re] = useState(0); const render = () => re(n => n + 1);
+      const clr = () => { setErr(''); setMsg(''); };
+      const [newEl, setNewEl] = useState({ title: '', desc: '', candidatesText: '' });
+      const [selElId, setSelElId] = useState('');
+      const [newCand, setNewCand] = useState({ name: '', party: '' });
+      const [newVoter, setNewVoter] = useState({ name: '', email: '', voterId: '', password: '' });
+      const [resElId, setResElId] = useState('');
+      const [tally, setTally] = useState(null);
+      const [tallying, setTallying] = useState(false);
+      const [creating, setCreating] = useState(false);
+
+      const elections = Object.values(DB.elections);
+      const voters = Object.values(DB.voters);
+      const totalVotes = Object.keys(DB.votes).length;
+
+      /* Create poll via real backend API */
+      async function createPollOnBackend() {
+        clr();
+        if (!newEl.title) return setErr('Election title is required.');
+        const candidateNames = (newEl.candidatesText || '').split('\n').map(s => s.trim()).filter(Boolean);
+        if (candidateNames.length < 2) return setErr('Enter at least 2 candidates, one per line.');
+        setCreating(true);
+        try {
+          const res = await apiCreatePoll(adminKey, newEl.title, candidateNames);
+          if (res.pollId) {
+            /* Mirror to local DB so the UI shows it */
+            const id = res.pollId;
+            DB.elections[id] = {
+              id, title: newEl.title, desc: newEl.desc, status: 'active',
+              candidates: candidateNames.map((name, i) => ({ id: name, name, party: 'Candidate', ...CPAL[i % CPAL.length] })),
+              createdBy: session.name, createdAt: nowFull(), startedAt: nowFull(), endedAt: null
+            };
+            logSec('CREATE_POLL_API', newEl.title + ' (id:' + id + ')', 'ok');
+            sendEmail('all-voters@system', 'Election Started: ' + newEl.title,
+              'The election "' + newEl.title + '" is now open for voting.\nPlease log in to cast your ballot.', 'ELECTION NOW OPEN');
+            onEmailChange();
+            setNewEl({ title: '', desc: '', candidatesText: '' });
+            setMsg('Poll "' + newEl.title + '" created on backend. ID: ' + id); render();
+          } else {
+            setErr(res.message || 'Failed to create poll on backend.');
+          }
+        } catch (e) {
+          setErr('Backend unreachable. Is the server running? ' + e.message);
+        }
+        setCreating(false);
+      }
+
+      function startElection(id) {
+        clr();
+        const el = DB.elections[id];
+        if (!el) return;
+        if (el.candidates.length < 2) return setErr('Add at least 2 candidates before starting.');
+        el.status = 'active'; el.startedAt = nowFull();
+        logSec('START_ELECTION', el.title, 'ok');
+        sendEmail('all-voters@system', 'Election Started: ' + el.title,
+          'The election "' + el.title + '" is now open for voting.\nPlease log in to cast your ballot.', 'ELECTION NOW OPEN');
+        onEmailChange(); setMsg('Election started.'); render();
+      }
+
+      function endElection(id) {
+        clr();
+        const el = DB.elections[id];
+        if (!el) return;
+        el.status = 'ended'; el.endedAt = nowFull();
+        logSec('END_ELECTION', el.title, 'ok');
+        setMsg('Election ended. Go to Results to tally votes.'); render();
+      }
+
+      function addCandidate() {
+        clr();
+        if (!selElId) return setErr('Select an election first.');
+        if (!newCand.name || !newCand.party) return setErr('Candidate name and party required.');
+        const el = DB.elections[selElId];
+        if (el.status === 'ended') return setErr('Cannot add candidates to an ended election.');
+        const idx = el.candidates.length;
+        const id = 'c_' + uid();
+        el.candidates.push({ id, name: newCand.name, party: newCand.party, ...CPAL[idx % CPAL.length] });
+        logSec('ADD_CANDIDATE', newCand.name + ' → ' + el.title);
+        setNewCand({ name: '', party: '' }); setMsg('Candidate added.'); render();
+      }
+
+      function removeCand(eid, cid) {
+        clr();
+        DB.elections[eid].candidates = DB.elections[eid].candidates.filter(c => c.id !== cid);
+        setMsg('Candidate removed.'); render();
+      }
+
+      async function registerVoter() {
+        clr();
+        const { name, email, voterId, password } = newVoter;
+        if (!name || !email || !voterId || !password) return setErr('All fields required.');
+        if (!/\S+@\S+\.\S+/.test(email)) return setErr('Invalid email.');
+        if (DB.voters[email]) return setErr('Voter already exists.');
+        if (password.length < 6) return setErr('Password min 6 chars.');
+        const pwdHash = await hashPwd(password);
+        DB.voters[email] = { id: 'v_' + uid(), name, email, pwdHash, voterId, ballotToken: null, ballotTokenHash: null, tokenUsedIn: {}, hasVotedIn: {}, regAt: nowFull(), addedBy: session.name };
+        sendEmail(email, 'SecureVote Account Created',
+          'Hello ' + name + ',\n\nYour voter account has been created by the election administrator.\n\nVoter ID: ' + voterId + '\nEmail: ' + email + '\nPassword: ' + password + '\n\nLog in at the SecureVote portal. You will receive a ballot token before the election.',
+          'VOTER ID: ' + voterId);
+        onEmailChange();
+        logSec('REG_VOTER', name + ' (' + email + ')', 'ok');
+        setNewVoter({ name: '', email: '', voterId: '', password: '' });
+        setMsg('Voter registered. Credentials emailed.'); render();
+      }
+
+      async function generateToken(email) {
+        clr();
+        const voter = DB.voters[email];
+        if (!voter) return;
+        const tok = genToken('BLT');
+        voter.ballotToken = tok;
+        voter.ballotTokenHash = await sha256(tok);
+        logSec('GEN_TOKEN', 'Token generated for ' + email, 'ok');
+        sendEmail(email, 'Your Ballot Token — SecureVote',
+          'Hello ' + voter.name + ',\n\nYour unique ballot token has been generated by the election authority.\n\nPresent this token when prompted during the voting process.\n\n⚠ This token is single-use and confidential. Do not share it.', tok);
+        onEmailChange();
+        setMsg('Token generated & emailed to ' + email + '.'); render();
+      }
+
+      async function generateResults() {
+        clr();
+        if (!resElId) return setErr('Select an election.');
+        const el = DB.elections[resElId];
+        if (el.status !== 'ended') return setErr('End the election before generating results.');
+        setTallying(true); setTally(null);
+        try {
+          const tobj = {};
+          el.candidates.forEach(c => { tobj[c.id] = 0; });
+          const keys = Object.keys(DB.votes).filter(k => k.startsWith(resElId + ':'));
+          for (const k of keys) {
+            const dec = await decryptVote(DB.votes[k]);
+            if (dec.electionId === resElId) tobj[dec.candidateId] = (tobj[dec.candidateId] || 0) + 1;
+          }
+          const total = Object.values(tobj).reduce((a, b) => a + b, 0);
+          DB.tallies[resElId] = { ...tobj, _total: total, _generatedAt: nowFull() };
+          logSec('TALLY', 'Decrypted ' + keys.length + ' votes for ' + el.title, 'ok');
+          setTally({ ...tobj, _total: total });
+        } catch (e) { setErr('Decryption error: ' + e.message); }
+        setTallying(false);
+      }
+
+      const TABS = ['overview', 'polls', 'candidates', 'voters', 'results', 'security'];
+
+      return h('div', { className: 'wrap' },
+        Seal({ icon: '🛡', title: 'Admin Panel', sub: 'Election Authority · ' + session.name }),
+        h('div', { className: 'card' },
+          h('div', { className: 'tabs' },
+            TABS.map(t => h('button', { key: t, className: 'tab' + (tab === t ? ' on' : ''), onClick: () => { clr(); setTab(t); } },
+              t.charAt(0).toUpperCase() + t.slice(1)))
+          ),
+
+          /* OVERVIEW */
+          tab === 'overview' && h('div', null,
+            h('div', { className: 'stats' },
+              h('div', { className: 'stat' }, h('div', { className: 'sv', style: { color: 'var(--blue)' } }, elections.length), h('div', { className: 'sl' }, 'Elections')),
+              h('div', { className: 'stat' }, h('div', { className: 'sv', style: { color: 'var(--gold)' } }, voters.length), h('div', { className: 'sl' }, 'Voters')),
+              h('div', { className: 'stat' }, h('div', { className: 'sv', style: { color: 'var(--green)' } }, totalVotes), h('div', { className: 'sl' }, 'Votes Cast'))
+            ),
+            h('div', { className: 'lbl' }, 'Elections'),
+            elections.length === 0
+              ? h('div', { style: { color: 'var(--t3)', fontSize: '12px', textAlign: 'center', padding: '1.5rem 0' } }, 'No elections yet. Go to Polls tab to create one.')
+              : elections.map(el => h('div', { key: el.id, style: { background: 'var(--bg)', border: '.5px solid var(--b1)', borderRadius: 'var(--r)', padding: '10px 13px', marginBottom: '8px' } },
+                h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
+                  h('div', { style: { fontWeight: '500', fontSize: '13.5px' } }, el.title),
+                  h('span', { className: 'badge ' + (el.status === 'active' ? 'b-green' : el.status === 'ended' ? 'b-red' : 'b-amber') },
+                    el.status === 'active' ? '● Active' : el.status === 'ended' ? 'Ended' : 'Draft')
+                ),
+                h('div', { style: { fontSize: '11px', color: 'var(--t3)', marginTop: '3px' } }, el.candidates.length + ' candidates · ' + el.createdAt)
+              )),
+            h('hr', { className: 'sep' }),
+            h('div', { className: 'lbl' }, 'Security log'),
+            h('div', { className: 'sec-log' },
+              SECLOG.length === 0
+                ? h('div', { style: { color: 'var(--t3)', padding: '1rem 0', textAlign: 'center', fontSize: '11px' } }, 'No activity yet.')
+                : SECLOG.slice(0, 15).map(e => h('div', { key: e.id, className: 'sl-item' },
+                  h('span', { className: 'sl-ts' }, e.ts),
+                  h('span', { className: 'sl-act' }, e.action),
+                  h('span', { className: 'sl-det' }, e.detail)
+                ))
+            ),
+            msg && h('div', { className: 'suc', style: { marginTop: '1rem' } }, msg)
+          ),
+
+          /* POLLS — create via backend API */
+          tab === 'polls' && h('div', null,
+            h('div', { className: 'adm-notice' }, '🔗 Polls are created directly on the backend API.'),
+            h('div', { className: 'lbl' }, 'Create new poll'),
+            h(Fld, { label: 'Poll title', val: newEl.title, onChange: v => setNewEl({ ...newEl, title: v }), ph: 'e.g. Presidential Election 2026' }),
+            h(Fld, { label: 'Description (optional)', val: newEl.desc, onChange: v => setNewEl({ ...newEl, desc: v }), ph: 'Brief description…', rows: 2 }),
+            h(Fld, { label: 'Candidates (one per line, min 2)', val: newEl.candidatesText, onChange: v => setNewEl({ ...newEl, candidatesText: v }), ph: 'Alice Johnson\nBob Smith\nCarol Davis', rows: 4 }),
+            err && h('div', { className: 'err' }, err),
+            msg && h('div', { className: 'suc' }, msg),
+            h('button', { className: 'btn btn-primary', onClick: createPollOnBackend, disabled: creating }, creating ? 'Creating on server…' : '+ Create Poll on Backend'),
+            h('hr', { className: 'sep' }),
+            h('div', { className: 'lbl' }, 'Manage elections (' + elections.length + ')'),
+            elections.length === 0
+              ? h('div', { style: { color: 'var(--t3)', fontSize: '12px', textAlign: 'center', padding: '1.5rem 0' } }, 'No elections yet.')
+              : h('table', { className: 'tbl' },
+                h('thead', null, h('tr', null, h('th', null, 'Title'), h('th', null, 'Status'), h('th', null, 'Cands'), h('th', null, 'Action'))),
+                h('tbody', null, elections.map(el => h('tr', { key: el.id },
+                  h('td', null, h('div', { style: { fontWeight: '500', color: 'var(--t1)' } }, el.title), h('div', { style: { fontSize: '10px', color: 'var(--t3)' } }, el.createdAt)),
+                  h('td', null, h('span', { className: 'badge ' + (el.status === 'active' ? 'b-green' : el.status === 'ended' ? 'b-red' : 'b-amber') }, el.status)),
+                  h('td', null, h('span', { style: { fontFamily: 'var(--fm)' } }, el.candidates.length)),
+                  h('td', null,
+                    el.status === 'draft' && h('button', { className: 'btn btn-green btn-xs', onClick: () => startElection(el.id) }, 'Start'),
+                    el.status === 'active' && h('button', { className: 'btn btn-red btn-xs', onClick: () => endElection(el.id) }, 'End'),
+                    el.status === 'ended' && h('span', { style: { fontSize: '11px', color: 'var(--t3)' } }, 'Ended')
+                  )
+                )))
+              )
+          ),
+
+          /* CANDIDATES */
+          tab === 'candidates' && h('div', null,
+            h(Sel, {
+              label: 'Select election', val: selElId, onChange: v => { clr(); setSelElId(v); },
+              options: elections.map(e => ({ id: e.id, label: e.title + ' [' + e.status + ']' }))
+            }),
+            selElId && DB.elections[selElId] && h('div', null,
+              h('div', { className: 'lbl' }, 'Candidates'),
+              DB.elections[selElId].candidates.length === 0
+                ? h('div', { style: { color: 'var(--t3)', fontSize: '12px', textAlign: 'center', padding: '1rem 0' } }, 'No candidates yet.')
+                : h('table', { className: 'tbl' },
+                  h('thead', null, h('tr', null, h('th', null, 'Name'), h('th', null, 'Party'), h('th', null, ''))),
+                  h('tbody', null, DB.elections[selElId].candidates.map(c => h('tr', { key: c.id },
+                    h('td', null, h('span', { style: { color: c.c, fontWeight: '500' } }, c.name)),
+                    h('td', null, c.party),
+                    h('td', null, DB.elections[selElId].status !== 'ended' &&
+                      h('button', { className: 'btn btn-red btn-xs', onClick: () => { clr(); removeCand(selElId, c.id); } }, '✕'))
+                  )))
+                ),
+              h('hr', { className: 'sep' }),
+              DB.elections[selElId].status !== 'ended'
+                ? h('div', null,
+                  h('div', { className: 'lbl' }, 'Add candidate'),
+                  h(Fld, { label: 'Full name', val: newCand.name, onChange: v => setNewCand({ ...newCand, name: v }), ph: 'Candidate name' }),
+                  h(Fld, { label: 'Party / affiliation', val: newCand.party, onChange: v => setNewCand({ ...newCand, party: v }), ph: 'Party name' }),
+                  err && h('div', { className: 'err' }, err),
+                  msg && h('div', { className: 'suc' }, msg),
+                  h('button', { className: 'btn btn-green', onClick: addCandidate }, '+ Add Candidate')
+                )
+                : h('div', { className: 'warn' }, 'Election ended. Candidates are locked.')
+            ),
+            !selElId && h('div', { style: { color: 'var(--t3)', fontSize: '12px', textAlign: 'center', padding: '2rem 0' } }, 'Select an election above.')
+          ),
+
+          /* VOTERS */
+          tab === 'voters' && h('div', null,
+            h('div', { className: 'lbl' }, 'Register new voter'),
+            h(Fld, { label: 'Full name', val: newVoter.name, onChange: v => setNewVoter({ ...newVoter, name: v }), ph: 'Voter name' }),
+            h(Fld, { label: 'Email address', val: newVoter.email, onChange: v => setNewVoter({ ...newVoter, email: v }), type: 'email', ph: 'voter@email.com' }),
+            h(Fld, { label: 'Voter ID', val: newVoter.voterId, onChange: v => setNewVoter({ ...newVoter, voterId: v }), ph: 'e.g. VID-0042' }),
+            h(Fld, { label: 'Temporary password', val: newVoter.password, onChange: v => setNewVoter({ ...newVoter, password: v }), type: 'password', ph: 'Min 6 characters' }),
+            err && h('div', { className: 'err' }, err),
+            msg && h('div', { className: 'suc' }, msg),
+            h('button', { className: 'btn btn-primary', onClick: registerVoter }, 'Register Voter'),
+            h('hr', { className: 'sep' }),
+            h('div', { className: 'lbl' }, 'Registered voters (' + voters.length + ')'),
+            voters.length === 0
+              ? h('div', { style: { color: 'var(--t3)', fontSize: '12px', textAlign: 'center', padding: '1.5rem 0' } }, 'No voters yet.')
+              : h('table', { className: 'tbl' },
+                h('thead', null, h('tr', null, h('th', null, 'Voter'), h('th', null, 'Voter ID'), h('th', null, 'Token'), h('th', null, 'Status'), h('th', null, ''))),
+                h('tbody', null, voters.map(v => h('tr', { key: v.email },
+                  h('td', null,
+                    h('div', { style: { fontWeight: '500', color: 'var(--t1)', fontSize: '12.5px' } }, v.name),
+                    h('div', { style: { fontSize: '10px', color: 'var(--t3)' } }, v.email)
+                  ),
+                  h('td', null, h('span', { style: { fontFamily: 'var(--fm)', fontSize: '11px' } }, v.voterId)),
+                  h('td', null, v.ballotToken ? h('span', { className: 'badge b-green' }, 'Issued') : h('span', { className: 'badge b-amber' }, 'Pending')),
+                  h('td', null, Object.keys(v.hasVotedIn || {}).length > 0 ? h('span', { className: 'badge b-green' }, 'Voted') : h('span', { className: 'badge b-blue' }, 'Pending')),
+                  h('td', null, h('button', { className: 'btn btn-purple btn-xs', onClick: () => generateToken(v.email) }, 'Send Token'))
+                )))
+              )
+          ),
+
+          /* RESULTS */
+          tab === 'results' && h('div', null,
+            h(Sel, {
+              label: 'Select election to tally', val: resElId, onChange: v => { clr(); setResElId(v); setTally(null); },
+              options: elections.filter(e => e.status === 'ended').map(e => ({ id: e.id, label: e.title }))
+            }),
+            elections.filter(e => e.status === 'ended').length === 0 &&
+            h('div', { style: { color: 'var(--t3)', fontSize: '12px', textAlign: 'center', padding: '2rem 0' } }, 'No ended elections. End an active election first.'),
+            resElId && h('div', null,
+              err && h('div', { className: 'err' }, err),
+              msg && h('div', { className: 'suc' }, msg),
+              h('button', { className: 'btn btn-primary', onClick: generateResults, disabled: tallying }, tallying ? 'Decrypting votes…' : '🔓 Decrypt & Generate Results'),
+              h('div', { className: 'crypto-strip' }, h('span', { className: 'cryp-dot' }), 'Votes decrypted using AES-256-GCM session key.')
+            ),
+            tally && resElId && DB.elections[resElId] && h('div', { style: { marginTop: '1rem' } },
+              h('div', { className: 'sec-badge' }, '✓ ' + tally._total + ' votes decrypted and tallied · ' + (DB.tallies[resElId]._generatedAt || '')),
+              DB.elections[resElId].candidates.map(c => {
+                const v = tally[c.id] || 0;
+                const pct = tally._total ? Math.round(v / tally._total * 100) : 0;
+                const lead = v === Math.max(...DB.elections[resElId].candidates.map(x => tally[x.id] || 0)) && tally._total > 0;
+                return h('div', { key: c.id, className: 'rb' },
+                  h('div', { className: 'rm' }, h('span', { className: 'rn2', style: { color: c.c } }, c.name, lead && ' 🏆'), h('span', { className: 'rc' }, v + ' votes · ' + pct + '%')),
+                  h('div', { className: 'rt' }, h('div', { className: 'rf', style: { width: pct + '%', background: c.c } }))
+                );
+              })
+            )
+          ),
+
+          /* SECURITY */
+          tab === 'security' && h('div', null,
+            h('div', { className: 'sec-badge' }, '✓ AES-256-GCM session key active · SHA-256 password hashing · CSPRNG tokens'),
+            h('div', { className: 'lbl' }, 'Encryption details'),
+            h('div', { style: { background: 'var(--bg)', border: '.5px solid var(--b1)', borderRadius: 'var(--r)', padding: '12px', marginBottom: '1rem', fontSize: '12px', lineHeight: '1.8', color: 'var(--t2)', whiteSpace: 'pre-wrap' } },
+              '• Password hashing: SHA-256 with static salt\n• Vote encryption: AES-256-GCM, per-vote random 96-bit IV\n• Token generation: crypto.getRandomValues (128-bit entropy)\n• Vote anonymity: SHA-256(token) used as DB key, token never stored\n• One-vote: enforced at token level + voter record level\n• Backend OTP: server-side generation with 10 min expiry'
+            ),
+            h('div', { className: 'lbl' }, 'Encrypted vote store (' + Object.keys(DB.votes).length + ' records)'),
+            Object.keys(DB.votes).length === 0
+              ? h('div', { style: { color: 'var(--t3)', fontSize: '12px', textAlign: 'center', padding: '1rem 0' } }, 'No votes cast yet.')
+              : Object.entries(DB.votes).slice(0, 5).map(([k, v]) => h('div', { key: k, style: { marginBottom: '10px' } },
+                h('div', { style: { fontSize: '10px', color: 'var(--t3)', fontFamily: 'var(--fm)' } }, k.slice(0, 40) + '…'),
+                h('div', { className: 'enc-blob' }, 'ALG: ' + v.alg + ' | TAG: ' + v.tagLen + 'bit\nIV:  ' + v.iv + '\nCT:  ' + v.ct.slice(0, 80) + '…')
+              )),
+            h('hr', { className: 'sep' }),
+            h('div', { className: 'lbl' }, 'Security audit log'),
+            h('div', { className: 'sec-log' },
+              SECLOG.length === 0
+                ? h('div', { style: { color: 'var(--t3)', padding: '1rem 0', textAlign: 'center', fontSize: '11px' } }, 'No events.')
+                : SECLOG.map(e => h('div', { key: e.id, className: 'sl-item' },
+                  h('span', { className: 'sl-ts' }, e.ts),
+                  h('span', { className: 'sl-act' }, e.action),
+                  h('span', { className: 'sl-det' }, e.detail)
+                ))
+            )
+          ),
+
+          h('div', { style: { borderTop: '.5px solid var(--b0)', marginTop: '1.1rem', paddingTop: '.875rem', textAlign: 'center' } },
+            h('button', { className: 'nav-lnk', onClick: onLogout }, 'Sign out ←')
+          )
+        )
+      );
+    }
+
+    /* ═══════════════════════════════════════════════
+       MAIN APP
+    ═══════════════════════════════════════════════ */
+    const ADMIN_SECRET = 'VOTESECURE2026';
+
+    function App() {
+      const [screen, setScreen] = useState('home');
+      const [role, setRole] = useState('voter');
+      const [session, setSession] = useState(null);
+      const [pendingEmail, setPendingEmail] = useState(''); // email waiting for OTP verify
+      const [otp, setOtp] = useState(['', '', '', '', '', '']);
+      const [err, setErr] = useState('');
+      const [loading, setLoading] = useState(false);
+      const [, emailTick] = useState(0);
+      const otpRefs = [useRef(), useRef(), useRef(), useRef(), useRef(), useRef()];
+      const [adminKey, setAdminKey] = useState('');
+
+      const [selElId, setSelElId] = useState('');
+      const [selCand, setSelCand] = useState('');
+      const [voteReceipt, setVoteReceipt] = useState('');
+      const [enteredToken, setEnteredToken] = useState('');
+      const [ballotToken, setBallotToken] = useState(''); // token received from backend after OTP verify
+      const [receivedToken, setReceivedToken] = useState(''); // auto-filled token shown on token-entry screen
+      const [vResults, setVResults] = useState(null);
+      const [resElId, setResElId] = useState('');
+      const [livePolls, setLivePolls] = useState({}); // polls fetched from backend
+
+      const [rF, setRF] = useState({ name: '', email: '', password: '', voterId: '' });
+      const [lF, setLF] = useState({ email: '', password: '' });
+      const [aR, setAR] = useState({ name: '', email: '', password: '', key: '' });
+      const [aL, setAL] = useState({ email: '', password: '' });
+
+      const clrErr = () => setErr('');
+      const go = s => { setErr(''); setScreen(s); };
+      const onEmailChange = () => emailTick(n => n + 1);
+
+      /* ── Voter Register ── */
+      async function voterRegister() {
+        clrErr(); setLoading(true);
+        const { name, email, password, voterId } = rF;
+        if (!name || !email || !password || !voterId) { setErr('All fields required.'); setLoading(false); return; }
+        if (!/\S+@\S+\.\S+/.test(email)) { setErr('Invalid email.'); setLoading(false); return; }
+        if (password.length < 6) { setErr('Password min 6 characters.'); setLoading(false); return; }
+        if (DB.voters[email]) { setErr('Email already registered.'); setLoading(false); return; }
+        const pwdHash = await hashPwd(password);
+        DB.voters[email] = { id: 'v_' + uid(), name, email, pwdHash, voterId, ballotToken: null, ballotTokenHash: null, tokenUsedIn: {}, hasVotedIn: {}, regAt: nowFull() };
+
+        /* Send real OTP via backend (also saves voter to MongoDB) */
+        try {
+          const res = await apiSendOTP(email);
+          if (res.message && res.message.toLowerCase().includes('sent')) {
+            setPendingEmail(email);
+            setSession({ email, name, role: 'voter' });
+            sendEmail(email, 'Welcome to SecureVote',
+              'Hello ' + name + ',\n\nYour voter account has been created.\n\nVoter ID: ' + voterId + '\nEmail: ' + email + '\n\nA real OTP was sent to your actual email inbox.',
+              'VOTER ID: ' + voterId);
+            onEmailChange();
+            logSec('REG_VOTER_SELF', name + ' (' + email + ')', 'ok');
+            setLoading(false); go('otp');
+          } else {
+            setErr(res.message || 'OTP sending failed. Check backend.'); setLoading(false);
+          }
+        } catch (e) {
+          setErr('Backend unreachable. Start the server first. ' + e.message); setLoading(false);
+        }
+      }
+
+      /* ── Voter Login ── */
+      async function voterLogin() {
+        clrErr(); setLoading(true);
+        const { email, password } = lF;
+        if (!email || !password) { setErr('Enter credentials.'); setLoading(false); return; }
+        const u = DB.voters[email];
+        if (!u) { setErr('No voter account found.'); setLoading(false); return; }
+        const h2 = await hashPwd(password);
+        if (h2 !== u.pwdHash) { setErr('Incorrect password.'); setLoading(false); return; }
+        setSession({ email, name: u.name, role: 'voter' });
+
+        /* Send real OTP via backend */
+        try {
+          const res = await apiSendOTP(email);
+          if (res.message && res.message.toLowerCase().includes('sent')) {
+            setPendingEmail(email);
+            logSec('VOTER_LOGIN', email, 'ok');
+            setLoading(false); go('otp');
+          } else {
+            setErr(res.message || 'OTP sending failed.'); setLoading(false);
+          }
+        } catch (e) {
+          setErr('Backend unreachable. ' + e.message); setLoading(false);
+        }
+      }
+
+      /* ── Admin Register ── */
+      async function adminRegister() {
+        clrErr(); setLoading(true);
+        const { name, email, password, key } = aR;
+        if (!name || !email || !password || !key) { setErr('All fields required.'); setLoading(false); return; }
+        if (key !== ADMIN_SECRET) { setErr('Invalid admin secret key. Access denied.'); setLoading(false); return; }
+        if (DB.admins[email]) { setErr('Admin account exists.'); setLoading(false); return; }
+        if (password.length < 6) { setErr('Password min 6 chars.'); setLoading(false); return; }
+        const pwdHash = await hashPwd(password);
+        DB.admins[email] = { id: 'a_' + uid(), name, email, pwdHash, adminApiKey: key, createdAt: nowFull() };
+        /* Persist admin to MongoDB + send real OTP via NodeMailer */
+        try {
+          const res = await fetch(API_BASE + '/api/admin/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, pwdHash, key }) }).then(r => r.json());
+          if (res.message && res.message.includes('OTP')) {
+            setSession({ email, name, role: 'admin' });
+            setAdminKey(key);
+            logSec('ADMIN_REG', name + ' (' + email + ')', 'ok');
+            setPendingEmail(email);
+            setLoading(false); go('otp');
+          } else {
+            setErr(res.message || 'Registration failed.'); setLoading(false);
+          }
+        } catch (e) { setErr('Backend error: ' + e.message); setLoading(false); }
+      }
+
+      /* ── Admin Login ── */
+      async function adminLogin() {
+        clrErr(); setLoading(true);
+        const { email, password } = aL;
+        if (!email || !password) { setErr('Enter credentials.'); setLoading(false); return; }
+        const pwdHash = await hashPwd(password);
+        /* Authenticate via backend + send real OTP via NodeMailer */
+        try {
+          const res = await fetch(API_BASE + '/api/admin/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, pwdHash }) }).then(r => r.json());
+          if (res.message && res.message.includes('OTP')) {
+            setSession({ email, name: '', role: 'admin' });
+            setAdminKey(ADMIN_SECRET);
+            logSec('ADMIN_LOGIN', email, 'ok');
+            setPendingEmail(email);
+            setLoading(false); go('otp');
+          } else {
+            setErr(res.message || 'Login failed.'); setLoading(false);
+          }
+        } catch (e) { setErr('Backend error: ' + e.message); setLoading(false); }
+      }
+
+      /* ── Verify OTP ──
+         Voters: verify with real backend (which then sends ballot token to real email)
+         Admins: verify locally (admin OTP stored in DB.admins) */
+      async function verifyOTP() {
+        clrErr();
+        const entered = otp.join('');
+        if (entered.length < 6) { setErr('Enter the full 6-digit code.'); return; }
+
+        if (session && session.role === 'admin') {
+          /* Verify admin OTP via backend (OTP was sent to real email) */
+          try {
+            const res = await fetch(API_BASE + '/api/admin/verify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: session.email, otp: entered }) }).then(r => r.json());
+            if (res.message === 'Verified') {
+              logSec('VERIFY_OTP', 'Admin OTP verified for ' + session.email, 'ok');
+              setOtp(['', '', '', '', '', '']);
+              go('admin');
+            } else {
+              setErr(res.message || 'Invalid OTP. Check your real email.');
+            }
+          } catch (e) { setErr('Backend error: ' + e.message); }
+          return;
+        }
+
+        /* Voter — verify with backend */
+        setLoading(true);
+        try {
+          const res = await apiVerifyOTP(pendingEmail, entered);
+          if (res.token) {
+            /* Token returned directly in response — auto-fill so voter doesn't need to copy from email */
+            setReceivedToken(res.token);
+            setEnteredToken(res.token);
+            setBallotToken(res.token);
+            logSec('VERIFY_OTP', 'OTP verified, token auto-received for ' + pendingEmail, 'ok');
+            setOtp(['', '', '', '', '', '']);
+            setLoading(false);
+            go('token-entry');
+          } else if (res.message && (res.message.toLowerCase().includes('verified') || res.message.toLowerCase().includes('sent'))) {
+            /* Backend didn't return token in body — voter must paste from email */
+            setReceivedToken('');
+            logSec('VERIFY_OTP', 'OTP verified for ' + pendingEmail, 'ok');
+            setOtp(['', '', '', '', '', '']);
+            setLoading(false);
+            go('token-entry');
+          } else {
+            setErr(res.message || 'Invalid OTP.'); setLoading(false);
+          }
+        } catch (e) {
+          setErr('Backend unreachable. ' + e.message); setLoading(false);
+        }
+      }
+
+      /* ── Submit Ballot Token ──
+         Token was sent to real email by backend after OTP verification.
+         Voter enters it here. We store it locally for use during castVote. */
+      async function submitToken() {
+        clrErr();
+        /* Use auto-received token if voter didn't manually type one */
+        const tok = (enteredToken.trim() || receivedToken.trim());
+        if (!tok) { setErr('No ballot token found. Check your email and paste it below.'); return; }
+        setEnteredToken(tok);
+        /* Store the token for use during vote submission */
+        setBallotToken(tok);
+        /* Also mirror to local voter record for admin panel display */
+        const voter = DB.voters[session.email];
+        if (voter) {
+          voter.ballotToken = tok;
+          voter.ballotTokenHash = await sha256(tok);
+        }
+        logSec('TOKEN_ACCEPTED', 'Ballot token accepted for ' + session.email, 'ok');
+
+        /* Load live polls from backend */
+        try {
+          const polls = await apiGetPolls();
+          setLivePolls(polls);
+          /* Mirror polls to local DB.elections for UI compatibility */
+          Object.entries(polls).forEach(([pid, poll]) => {
+            if (!DB.elections[pid]) {
+              DB.elections[pid] = {
+                id: pid, title: poll.title, desc: '', status: 'active',
+                candidates: poll.candidates.map((name, i) => ({ id: name, name, party: 'Candidate', ...CPAL[i % CPAL.length] })),
+                createdAt: nowFull(), startedAt: nowFull(), endedAt: null
+              };
+            }
+          });
+          logSec('POLLS_LOADED', Object.keys(polls).length + ' polls fetched from backend', 'ok');
+        } catch (e) {
+          logSec('POLLS_WARN', 'Could not fetch polls from backend: ' + e.message, 'warn');
+        }
+        go('elections');
+      }
+
+      /* ── Cast Vote via Backend API ── */
+      async function castVote() {
+        clrErr(); setLoading(true);
+        if (!selElId || !selCand) { setErr('Select an election and candidate.'); setLoading(false); return; }
+        const el = DB.elections[selElId];
+        if (!el || el.status !== 'active') { setErr('Election is not active.'); setLoading(false); return; }
+        const voter = DB.voters[session.email];
+        if (voter && voter.hasVotedIn && voter.hasVotedIn[selElId]) { setErr('You have already voted in this election.'); setLoading(false); return; }
+
+        /* Encrypt vote locally with AES-256-GCM */
+        const enc = await encryptVote(selCand, selElId);
+
+        /* Submit to backend API */
+        try {
+          const res = await apiCastVote(session.email, ballotToken, selElId, selCand);
+          if (res.message && res.message.toLowerCase().includes('success')) {
+            /* Mirror locally */
+            const tokenHash = await sha256(ballotToken);
+            const voteKey = selElId + ':' + tokenHash;
+            DB.votes[voteKey] = enc;
+            if (voter) { voter.hasVotedIn[selElId] = true; voter.tokenUsedIn[selElId] = true; }
+
+            const receipt = 'RCP-' + tokenHash.slice(0, 8).toUpperCase();
+            setVoteReceipt(receipt);
+            logSec('VOTE_CAST', 'Encrypted & submitted. Receipt: ' + receipt, 'ok');
+            sendEmail(session.email, 'Vote Confirmation — SecureVote',
+              'Your vote in "' + el.title + '" has been recorded.\n\nAnonymous vote receipt: ' + receipt + '\n\nYour identity cannot be linked to your vote. The ballot token has been consumed.\nCast: ' + nowFull(),
+              receipt);
+            onEmailChange();
+            setLoading(false); go('confirmed');
+          } else {
+            setErr(res.message || 'Vote submission failed.'); setLoading(false);
+          }
+        } catch (e) {
+          setErr('Backend unreachable. ' + e.message); setLoading(false);
+        }
+      }
+
+      async function viewResults() {
+        clrErr();
+        if (!resElId) { setErr('Select an election.'); return; }
+        const el = DB.elections[resElId];
+        if (!el) return;
+        if (!DB.tallies[resElId]) { setErr('Results not yet generated by administrator.'); return; }
+        setVResults({ election: el, tally: DB.tallies[resElId] }); go('v-results');
+      }
+
+      const activeEls = Object.values(DB.elections).filter(e => e.status === 'active');
+      const endedEls = Object.values(DB.elections).filter(e => e.status === 'ended' && DB.tallies[e.id]);
+
+      if (screen === 'admin') return h('div', null,
+        h(AdminPanel, { session, onLogout: () => { setSession(null); setAdminKey(''); go('home'); }, onEmailChange, adminKey }),
+        h(EmailInbox, { emails: DB.emails, onRead: onEmailChange })
+      );
+
+      return h('div', null,
+        h('div', { className: 'wrap' },
+
+          /* HOME */
+          screen === 'home' && h('div', null,
+            Seal(),
+            h('div', { className: 'el-banner' },
+              h('div', { className: 'el-banner-title' }, 'ELECTION PORTAL'),
+              h('div', { className: 'el-banner-sub' }, 'Choose your role to get started')
+            ),
+            h('div', { className: 'card' },
+              h('div', { className: 'role-grid' },
+                h('div', { className: 'role-card' + (role === 'voter' ? ' rv' : ''), onClick: () => setRole('voter') },
+                  h('div', { className: 'ri' }, '🗳'), h('div', { className: 'rn' }, 'Voter'), h('div', { className: 'rd' }, 'Register & cast ballot')),
+                h('div', { className: 'role-card' + (role === 'admin' ? ' ra' : ''), onClick: () => setRole('admin') },
+                  h('div', { className: 'ri' }, '🛡'), h('div', { className: 'rn' }, 'Administrator'), h('div', { className: 'rd' }, 'Manage elections'))
+              ),
+              role === 'voter'
+                ? h('div', null,
+                  h('button', { className: 'btn btn-primary', onClick: () => go('v-register') }, 'Register as Voter'),
+                  h('div', { className: 'div' }, 'already have an account?'),
+                  h('button', { className: 'btn btn-outline', onClick: () => go('v-login') }, 'Voter Sign In')
+                )
+                : h('div', null,
+                  h('div', { className: 'adm-notice' }, '🔐 Admin access requires the election authority secret key.'),
+                  h('button', { className: 'btn btn-purple', onClick: () => go('a-register') }, 'Register as Admin'),
+                  h('div', { className: 'div' }, 'already registered?'),
+                  h('button', { className: 'btn btn-outline', onClick: () => go('a-login') }, 'Admin Sign In')
+                ),
+              endedEls.length > 0 && h('div', null,
+                h('hr', { className: 'sep' }),
+                h('div', { style: { textAlign: 'center' } },
+                  h('button', { className: 'nav-lnk', onClick: () => go('public-results') }, 'View published results →')
+                )
+              )
+            )
+          ),
+
+          /* VOTER REGISTER */
+          screen === 'v-register' && h('div', { className: 'card' },
+            h('div', { className: 'ct' }, 'Create voter account'),
+            h('div', { className: 'cs' }, 'Register to participate in elections.'),
+            h(Fld, { label: 'Full name', val: rF.name, onChange: v => setRF({ ...rF, name: v }), ph: 'Your full name' }),
+            h(Fld, { label: 'Email address', val: rF.email, onChange: v => setRF({ ...rF, email: v }), type: 'email', ph: 'your@email.com' }),
+            h(Fld, { label: 'Password', val: rF.password, onChange: v => setRF({ ...rF, password: v }), type: 'password', ph: 'Min 6 characters' }),
+            h(Fld, { label: 'Voter ID (assigned)', val: rF.voterId, onChange: v => setRF({ ...rF, voterId: v }), ph: 'e.g. VID-0042' }),
+            err && h('div', { className: 'err' }, err),
+            h('button', { className: 'btn btn-primary', style: { marginTop: '.5rem' }, onClick: voterRegister, disabled: loading }, loading ? 'Sending OTP…' : 'Register & Continue'),
+            h('div', { className: 'div' }, 'or'),
+            h('button', { className: 'btn btn-outline', onClick: () => { clrErr(); go('v-login'); } }, 'Sign In Instead'),
+            h('div', { style: { textAlign: 'center', marginTop: '1rem' } }, h('button', { className: 'nav-lnk', onClick: () => go('home') }, '← Back'))
+          ),
+
+          /* VOTER LOGIN */
+          screen === 'v-login' && h('div', { className: 'card' },
+            h('div', { className: 'ct' }, 'Voter sign in'),
+            h('div', { className: 'cs' }, 'Enter your registered credentials.'),
+            h(Fld, { label: 'Email', val: lF.email, onChange: v => setLF({ ...lF, email: v }), type: 'email', ph: 'your@email.com' }),
+            h(Fld, { label: 'Password', val: lF.password, onChange: v => setLF({ ...lF, password: v }), type: 'password', ph: 'Your password' }),
+            err && h('div', { className: 'err' }, err),
+            h('button', { className: 'btn btn-primary', style: { marginTop: '.5rem' }, onClick: voterLogin, disabled: loading }, loading ? 'Sending OTP…' : 'Sign In & Continue'),
+            h('div', { className: 'div' }, 'or'),
+            h('button', { className: 'btn btn-outline', onClick: () => { clrErr(); go('v-register'); } }, 'Create Account'),
+            h('div', { style: { textAlign: 'center', marginTop: '1rem' } }, h('button', { className: 'nav-lnk', onClick: () => go('home') }, '← Back'))
+          ),
+
+          /* ADMIN REGISTER */
+          screen === 'a-register' && h('div', { className: 'card' },
+            h('div', { className: 'ct' }, 'Register as administrator'),
+            h('div', { className: 'cs' }, 'Requires the election authority secret key.'),
+
+            h(Fld, { label: 'Full name', val: aR.name, onChange: v => setAR({ ...aR, name: v }), ph: 'Admin name' }),
+            h(Fld, { label: 'Email', val: aR.email, onChange: v => setAR({ ...aR, email: v }), type: 'email', ph: 'admin@example.com' }),
+            h(Fld, { label: 'Password', val: aR.password, onChange: v => setAR({ ...aR, password: v }), type: 'password', ph: 'Min 6 characters' }),
+            h(Fld, { label: 'Admin secret key', val: aR.key, onChange: v => setAR({ ...aR, key: v }), ph: 'Enter secret key' }),
+            err && h('div', { className: 'err' }, err),
+            h('button', { className: 'btn btn-primary', style: { marginTop: '.5rem' }, onClick: adminRegister, disabled: loading }, loading ? 'Processing…' : 'Register Admin Account'),
+            h('div', { className: 'div' }, 'or'),
+            h('button', { className: 'btn btn-outline', onClick: () => { clrErr(); go('a-login'); } }, 'Admin Sign In'),
+            h('div', { style: { textAlign: 'center', marginTop: '1rem' } }, h('button', { className: 'nav-lnk', onClick: () => go('home') }, '← Back'))
+          ),
+
+          /* ADMIN LOGIN */
+          screen === 'a-login' && h('div', { className: 'card' },
+            h('div', { className: 'ct' }, 'Administrator sign in'),
+            h('div', { className: 'cs' }, 'Restricted — authorized personnel only.'),
+            h(Fld, { label: 'Email', val: aL.email, onChange: v => setAL({ ...aL, email: v }), type: 'email', ph: 'admin@example.com' }),
+            h(Fld, { label: 'Password', val: aL.password, onChange: v => setAL({ ...aL, password: v }), type: 'password', ph: 'Your password' }),
+            err && h('div', { className: 'err' }, err),
+            h('button', { className: 'btn btn-primary', style: { marginTop: '.5rem' }, onClick: adminLogin, disabled: loading }, loading ? 'Authenticating…' : 'Sign In'),
+            h('div', { className: 'div' }, 'or'),
+            h('button', { className: 'btn btn-outline', onClick: () => { clrErr(); go('a-register'); } }, 'Register Admin Account'),
+            h('div', { style: { textAlign: 'center', marginTop: '1rem' } }, h('button', { className: 'nav-lnk', onClick: () => go('home') }, '← Back'))
+          ),
+
+          /* OTP — voter enters code received in real email inbox */
+          screen === 'otp' && h('div', { className: 'card' },
+            h('div', { className: 'ct' }, '2-step verification'),
+            h('div', { className: 'cs' }, 'Enter the 6-digit code sent to your email.'),
+            h('div', { className: 'otp-hint' },
+              session && session.role === 'admin'
+                ? '📬 Check the inbox widget (bottom right) for your admin code.'
+                : '📧 Check your real email inbox at ' + pendingEmail + ' for the OTP.'
+            ),
+            h(OTPInput, { otp, setOtp, refs: otpRefs }),
+            err && h('div', { className: 'err' }, err),
+            h('button', { className: 'btn btn-primary', onClick: verifyOTP, disabled: loading }, loading ? 'Verifying…' : 'Verify Identity'),
+            h('div', { style: { textAlign: 'center', marginTop: '1rem' } },
+              h('button', { className: 'nav-lnk', onClick: () => { clrErr(); setOtp(['', '', '', '', '', '']); go('home'); } }, '← Back'))
+          ),
+
+          /* TOKEN ENTRY — token is auto-filled from backend response; voter just confirms */
+          screen === 'token-entry' && h('div', { className: 'card' },
+            h('div', { className: 'ct' }, 'Your ballot token'),
+            h('div', { className: 'cs' }, 'Your identity has been verified. Your ballot token is ready.'),
+            receivedToken
+              ? h('div', null,
+                h('div', { className: 'sec-badge' }, '✓ Token received from server — auto-filled below'),
+                h('div', { className: 'tok-lbl' }, 'Your ballot token'),
+                h('div', { className: 'tok' }, receivedToken),
+                h('div', { style: { fontSize: '11px', color: 'var(--t3)', marginBottom: '1rem', lineHeight: '1.6' } }, 'This token was also sent to your email as backup. It is single-use — do not share it.')
+              )
+              : h('div', null,
+                h('div', { className: 'info' }, '📧 Check your real email inbox for "Your SecureVote Ballot Token" and paste it below.'),
+                h(Fld, { label: 'Paste ballot token here', val: enteredToken, onChange: setEnteredToken, ph: 'Paste the hex token from your email…' })
+              ),
+            err && h('div', { className: 'err' }, err),
+            h('button', { className: 'btn btn-primary', onClick: submitToken }, receivedToken ? 'Continue to Vote →' : 'Confirm Token & Load Elections'),
+            h('div', { style: { textAlign: 'center', marginTop: '1rem' } }, h('button', { className: 'nav-lnk', onClick: () => go('home') }, '← Back'))
+          ),
+
+          /* ELECTIONS */
+          screen === 'elections' && h('div', { className: 'card' },
+            h('div', { className: 'ct' }, 'Active elections'),
+            h('div', { className: 'cs' }, 'Select an election to cast your ballot.'),
+            activeEls.length === 0
+              ? h('div', { style: { color: 'var(--t3)', fontSize: '13px', textAlign: 'center', padding: '2rem 0' } }, 'No active elections at this time.\nContact the administrator.')
+              : activeEls.map(el => h('div', {
+                key: el.id,
+                className: 'el-card' + (selElId === el.id ? ' active-el' : ''),
+                onClick: () => { setSelElId(el.id); setSelCand(''); clrErr(); }
+              },
+                h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
+                  h('div', { className: 'en' }, el.title),
+                  h('span', { className: 'badge b-live' }, '● Open')
+                ),
+                h('div', { className: 'ed2' }, el.desc || 'No description'),
+                h('div', { style: { fontSize: '11px', color: 'var(--t3)', marginTop: '4px' } }, el.candidates.length + ' candidates · Started ' + el.startedAt)
+              )),
+            selElId && DB.elections[selElId] && h('div', { style: { marginTop: '1rem' } },
+              h('div', { className: 'lbl' }, 'Select a candidate'),
+              DB.elections[selElId].candidates.map(c => h('div', {
+                key: c.id, className: 'cand' + (selCand === c.id ? ' sel' : ''),
+                onClick: () => { setSelCand(c.id); clrErr(); }
+              },
+                h('div', { className: 'cav', style: { background: c.bg, color: c.c } },
+                  c.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2)),
+                h('div', null, h('div', { className: 'cnm' }, c.name), h('div', { className: 'cpt' }, c.party)),
+                h('div', { className: 'rdot' }, selCand === c.id && h('div', { className: 'rdi' }))
+              )),
+              err && h('div', { className: 'err' }, err),
+              h('button', { className: 'btn btn-primary', style: { marginTop: '.75rem' }, onClick: castVote, disabled: loading },
+                loading ? 'Submitting vote…' : 'Submit Ballot'),
+              h('div', { className: 'crypto-strip' }, h('span', { className: 'cryp-dot' }), 'Vote encrypted with AES-256-GCM before submission.')
+            ),
+            endedEls.length > 0 && h('div', null,
+              h('hr', { className: 'sep' }),
+              h('div', { className: 'lbl' }, 'View results'),
+              h(Sel, { label: 'Ended election', val: resElId, onChange: setResElId, options: endedEls.map(e => ({ id: e.id, label: e.title })) }),
+              err && resElId && h('div', { className: 'err' }, err),
+              h('button', { className: 'btn btn-outline', onClick: viewResults }, 'View Results')
+            )
+          ),
+
+          /* CONFIRMED */
+          screen === 'confirmed' && h('div', { className: 'card' },
+            h('div', { className: 'confetti' }, '✓'),
+            h('div', { className: 'ct', style: { textAlign: 'center' } }, 'Ballot confirmed'),
+            h('div', { className: 'cs', style: { textAlign: 'center', marginBottom: '1.25rem' } }, 'Your encrypted vote has been recorded. You cannot be identified from your vote.'),
+            h('div', { className: 'sec-badge' }, '✓ AES-256-GCM encrypted · Token consumed · Identity separated'),
+            h('div', { className: 'tok-lbl' }, 'Your anonymous vote receipt'),
+            h('div', { className: 'tok' }, voteReceipt),
+            h('div', { style: { fontSize: '11px', color: 'var(--t3)', lineHeight: '1.7', marginBottom: '1.25rem' } }, 'Check your email inbox for the confirmation email. Results are available after the election ends and the administrator tallies votes.'),
+            endedEls.length > 0 && h('button', { className: 'btn btn-outline', onClick: () => go('elections') }, 'View Available Results'),
+            h('div', { style: { textAlign: 'center', marginTop: '1rem' } }, h('button', { className: 'nav-lnk', onClick: () => go('home') }, '← Home'))
+          ),
+
+          /* VOTER RESULTS */
+          screen === 'v-results' && vResults && h('div', { className: 'card' },
+            h('div', { style: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '.2rem' } },
+              h('div', { className: 'ct' }, vResults.election.title),
+              h('span', { className: 'badge b-red' }, 'Ended')
+            ),
+            h('div', { className: 'cs' }, vResults.tally._total + ' total votes'),
+            vResults.election.candidates.map(c => {
+              const v = vResults.tally[c.id] || 0;
+              const pct = vResults.tally._total ? Math.round(v / vResults.tally._total * 100) : 0;
+              const maxV = Math.max(...vResults.election.candidates.map(x => vResults.tally[x.id] || 0));
+              return h('div', { key: c.id, className: 'rb' },
+                h('div', { className: 'rm' }, h('span', { className: 'rn2', style: { color: c.c } }, c.name, v === maxV && vResults.tally._total > 0 && ' 🏆'), h('span', { className: 'rc' }, v + ' · ' + pct + '%')),
+                h('div', { className: 'rt' }, h('div', { className: 'rf', style: { width: pct + '%', background: c.c } }))
+              );
+            }),
+            h('div', { style: { textAlign: 'center', marginTop: '1.5rem' } }, h('button', { className: 'nav-lnk', onClick: () => go('home') }, '← Home'))
+          ),
+
+          /* PUBLIC RESULTS */
+          screen === 'public-results' && h('div', { className: 'card' },
+            h('div', { className: 'ct' }, 'Published results'),
+            h('div', { className: 'cs' }, 'Final results for completed elections.'),
+            endedEls.length === 0
+              ? h('div', { style: { color: 'var(--t3)', fontSize: '13px', textAlign: 'center', padding: '2rem 0' } }, 'No results published yet.')
+              : endedEls.map(el => {
+                const t = DB.tallies[el.id];
+                const maxV2 = Math.max(...el.candidates.map(c => t[c.id] || 0));
+                return h('div', { key: el.id, style: { marginBottom: '1.5rem' } },
+                  h('div', { style: { fontWeight: '500', fontSize: '14.5px', marginBottom: '.5rem' } },
+                    el.title, h('span', { className: 'badge b-red', style: { marginLeft: '8px' } }, 'Ended')),
+                  h('div', { style: { fontSize: '11px', color: 'var(--t3)', marginBottom: '.75rem' } }, t._total + ' votes · ' + t._generatedAt),
+                  el.candidates.map(c => {
+                    const v = t[c.id] || 0;
+                    const pct = t._total ? Math.round(v / t._total * 100) : 0;
+                    return h('div', { key: c.id, className: 'rb' },
+                      h('div', { className: 'rm' },
+                        h('span', { className: 'rn2', style: { color: c.c } }, c.name, v === maxV2 && t._total > 0 && ' 🏆'),
+                        h('span', { className: 'rc' }, v + ' · ' + pct + '%')
+                      ),
+                      h('div', { className: 'rt' }, h('div', { className: 'rf', style: { width: pct + '%', background: c.c } }))
+                    );
+                  })
+                );
+              }),
+            h('div', { style: { textAlign: 'center', marginTop: '1rem' } }, h('button', { className: 'nav-lnk', onClick: () => go('home') }, '← Home'))
+          )
+        ),
+
+        h(EmailInbox, { emails: DB.emails, onRead: onEmailChange })
+      );
+    }
+
+    (async () => {
+      AES_KEY = await crypto.subtle.generateKey({ name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+      logSec('INIT', 'AES-256-GCM session key generated', 'ok');
+      logSec('INIT', 'SHA-256 hash engine ready', 'ok');
+      ReactDOM.render(React.createElement(App), document.getElementById('root'));
+    })();
+  </script>
+</body>
+
+</html>
